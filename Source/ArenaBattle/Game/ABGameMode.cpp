@@ -10,8 +10,8 @@
 AABGameMode::AABGameMode()
 {
 	// DefaultPawnClass 지정
-	static ConstructorHelpers::FClassFinder<APawn> DefaultPawnClassRef(TEXT("/Script/Engine.Blueprint'/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.BP_ThirdPersonCharacter_C'"));
-	check(DefaultPawnClassRef.Class);
+	static ConstructorHelpers::FClassFinder<APawn> DefaultPawnClassRef(TEXT("/Script/CoreUObject.Class'/Script/ArenaBattle.ABCharacterPlayer'"));
+	ensureAlways(DefaultPawnClassRef.Class);
 	if (DefaultPawnClassRef.Class)
 	{
 		DefaultPawnClass = DefaultPawnClassRef.Class;
@@ -23,7 +23,7 @@ AABGameMode::AABGameMode()
 
 	// 방법 2: ConstructorHelpers::FClassFinder 이용. - 에셋으로부터 직접 참조, 헤더 파일 의존성 제거
 	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerClassRef(TEXT("/Script/CoreUObject.Class'/Script/ArenaBattle.ABPlayerController'"));
-	check(PlayerControllerClassRef.Class);
+	ensureAlways(PlayerControllerClassRef.Class);
 	if (PlayerControllerClassRef.Class)
 	{
 		PlayerControllerClass = PlayerControllerClassRef.Class;
