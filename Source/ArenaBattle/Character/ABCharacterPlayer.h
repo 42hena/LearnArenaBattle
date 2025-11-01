@@ -36,6 +36,10 @@ protected:
 	void Look(const FInputActionValue& Value);
 #pragma endregion
 
+#pragma region DataAsset변경가상함수
+	virtual void SetCharacterControlData(const class UABCharacterControlData* CharacterControlData) override;
+#pragma endregion
+
 #pragma region Camera변수
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, Meta = (AllowPrivateAccess = "true"))
