@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -14,4 +14,8 @@ class ARENABATTLE_API AABGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+#pragma region 특수맴버함수
+public:
+	AABGameMode();
+#pragma endregion
 };
