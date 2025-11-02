@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -14,4 +14,9 @@ class ARENABATTLE_API AABCharacterNonPlayer : public AABCharacterBase
 {
 	GENERATED_BODY()
 	
+public:
+	AABCharacterNonPlayer();
+
+protected:
+	virtual void SetDead() override;
 };

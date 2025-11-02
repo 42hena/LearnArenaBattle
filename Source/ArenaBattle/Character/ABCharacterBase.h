@@ -75,6 +75,8 @@ protected:
 #pragma region Dead변수
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Animation, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UAnimMontage> DeadMontage;
+
+	float DeadEventDelayTime = 5.0f;
 #pragma endregion
 
 };
