@@ -29,7 +29,24 @@ protected:
 	virtual void SetCharacterControlData(const class UABCharacterControlData* CharacterControlData);
 #pragma endregion
 
+#pragma region ComboAction함수
+	void ProcessComboCommand();
+
+	void ComboActionBegin();
+	void ComboActionEnd(class UAnimMontage* TatgetMontage, bool bInterrupted);
+#pragma endregion
+
 	UPROPERTY(EditAnywhere, Category = CharacterControl, Meta = (AllowPrivateAccess = "true"))
 	TMap<ECharacterControlType, class UABCharacterControlData *> CharacterControlManager;
 	//TMap<ECharacterControlType, TObjectPtr<class UABCharacterControlData>> CharacterControlManager;
+
+#pragma region ComboAction변수
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Animation, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UAnimMontage> ComboActionMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UABComboActionData> ComboActionData;
+
+	int32 CurrentCombo = 0;
+#pragma endregion
 };

@@ -212,17 +212,3 @@ void AABCharacterPlayer::ChangeCharacterControl()
 }
 
 #pragma endregion
-
-#pragma region 공개함수
-
-void AABCharacterPlayer::ProcessComboCommand()
-{
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-
-	if (AnimInstance != nullptr)
-	{
-		AnimInstance->Montage_Play(ComboActionMontage, 1.0f);
-	}
-}
-
-#pragma endregion

@@ -48,10 +48,6 @@ protected:
 	void SetCharacterControl(ECharacterControlType NewCharacterControlType);
 #pragma endregion
 
-#pragma region ComboAction함수
-	void ProcessComboCommand();
-#pragma endregion
-
 #pragma region Camera변수
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, Meta = (AllowPrivateAccess = "true"))
@@ -83,10 +79,5 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	ECharacterControlType CurrentCharacterControlType;
-#pragma endregion
-
-#pragma region ComboAction변수
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Animation, Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UAnimMontage> ComboActionMontage;
 #pragma endregion
 };

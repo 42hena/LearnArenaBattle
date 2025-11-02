@@ -83,3 +83,42 @@ void AABCharacterBase::SetCharacterControlData(const UABCharacterControlData* Ch
 
 #pragma endregion
 
+#pragma region 공개함수
+
+void AABCharacterBase::ProcessComboCommand()
+{
+	if (CurrentCombo == 0)
+	{
+		ComboActionBegin();
+	}
+}
+
+void AABCharacterBase::ComboActionBegin()
+{
+	// Combo Status
+	CurrentCombo = 1;
+
+	// Movement Setting
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
+
+	// Animation Setting
+	const float AttackSpeedRate = 1.0f;
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	AnimInstance->Montage_Play(ComboActionMontage, AttackSpeedRate);
+
+
+	// 끝날 때 실행될 델리게이트 지정.
+	FOnMontageEnded EndDelegate;
+	EndDelegate.BindUObject(this, &AABCharacterBase::ComboActionEnd);
+	AnimInstance->Montage_SetEndDelegate(EndDelegate, ComboActionMontage);
+}
+
+void AABCharacterBase::ComboActionEnd(UAnimMontage* TatgetMontage, bool bInterrupted)
+{
+	check(CurrentCombo != 0);
+	CurrentCombo = 0;
+
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+}
+
+#pragma endregion
