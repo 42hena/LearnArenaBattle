@@ -32,12 +32,17 @@ protected:
 #pragma endregion
 
 #pragma region Input함수
-	void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
+	void ShoulderMove(const FInputActionValue& Value);
+	void QuarterMove(const FInputActionValue& Value);
+	void ShoulderLook(const FInputActionValue& Value);
 #pragma endregion
 
 #pragma region DataAsset변경가상함수
 	virtual void SetCharacterControlData(const class UABCharacterControlData* CharacterControlData) override;
+#pragma endregion
+#pragma region DataAsset변경함수
+	void ChangeCharacterControl();
+	void SetCharacterControl(ECharacterControlType NewCharacterControlType);
 #pragma endregion
 
 #pragma region Camera변수
@@ -52,15 +57,21 @@ protected:
 #pragma region Input변수
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UInputMappingContext> DefaultMappingContext;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> JumpAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UInputAction> MoveAction;
+	TObjectPtr<class UInputAction> ShoulderMoveAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UInputAction> LookAction;
+	TObjectPtr<class UInputAction> QuarterMoveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UInputAction> ShoulderLookAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UInputAction> ChangeControlAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+	ECharacterControlType CurrentCharacterControlType;
 #pragma endregion
 };
