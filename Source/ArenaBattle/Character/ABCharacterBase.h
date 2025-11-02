@@ -34,6 +34,9 @@ protected:
 
 	void ComboActionBegin();
 	void ComboActionEnd(class UAnimMontage* TatgetMontage, bool bInterrupted);
+
+	void SetComboCheckTimer();
+	void ComboCheck();
 #pragma endregion
 
 	UPROPERTY(EditAnywhere, Category = CharacterControl, Meta = (AllowPrivateAccess = "true"))
@@ -48,5 +51,8 @@ protected:
 	TObjectPtr<class UABComboActionData> ComboActionData;
 
 	int32 CurrentCombo = 0;
+
+	FTimerHandle ComboTimerHandle;
+	bool HasNextComboCommand = false;
 #pragma endregion
 };

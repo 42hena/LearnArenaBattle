@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 
 #include "ABCharacterControlData.h"
+#include "ABComboActionData.h"
 
 #pragma region 특수맴버함수
 
@@ -90,7 +91,20 @@ void AABCharacterBase::ProcessComboCommand()
 	if (CurrentCombo == 0)
 	{
 		ComboActionBegin();
+		return;
 	}
+
+	if (!ComboTimerHandle.IsValid())
+	{
+		HasNextComboCommand = false;
+	}
+	else
+	{
+		HasNextComboCommand = true;
+	}
+
+	ComboTimerHandle.Invalidate();
+	SetComboCheckTimer();
 }
 
 void AABCharacterBase::ComboActionBegin()
@@ -119,6 +133,39 @@ void AABCharacterBase::ComboActionEnd(UAnimMontage* TatgetMontage, bool bInterru
 	CurrentCombo = 0;
 
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+}
+
+void AABCharacterBase::SetComboCheckTimer()
+{
+	int32 ComboIndex = CurrentCombo - 1;
+	ensure(ComboActionData->EffectiveFrameCount.IsValidIndex(ComboIndex));
+
+	const float AttackSpeedRate = 1.0f;
+	//float ComboEffectiveTime = (ComboActionData->EffectiveFrameCount[ComboIndex] / ComboActionData->FrameRate) / AttackSpeedRate;
+	float ComboEffectiveTime = (ComboActionData->EffectiveFrameCount[ComboIndex] / ComboActionData->FrameRate);
+	UE_LOG(LogTemp, Log, TEXT("SetComboCheckTimer: %f"), ComboEffectiveTime);
+	if (ComboEffectiveTime > 0)
+	{
+		// 한번만 발동하게?
+		GetWorld()->GetTimerManager().SetTimer(ComboTimerHandle, this, &AABCharacterBase::ComboCheck, ComboEffectiveTime, false);
+	}
+}
+
+void AABCharacterBase::ComboCheck()
+{
+	ComboTimerHandle.Invalidate();
+	if (HasNextComboCommand)
+	{
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		CurrentCombo = FMath::Clamp(CurrentCombo + 1, 1, ComboActionData->MaxComboCount);
+		FString NameTemp = FString::Printf(TEXT("%s%d"), *ComboActionData->MontageSectionPrefix, CurrentCombo);
+		FName NextSection = *NameTemp;
+		UE_LOG(LogTemp, Log, TEXT("CurrentCombo:%s %d"), *NameTemp, CurrentCombo);
+		AnimInstance->Montage_JumpToSection(NextSection, ComboActionMontage);
+		SetComboCheckTimer();
+		HasNextComboCommand = false;
+	}
 }
 
 #pragma endregion
