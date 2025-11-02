@@ -169,3 +169,8 @@ void AABCharacterBase::ComboCheck()
 }
 
 #pragma endregion
+
+void AABCharacterBase::AttackHitCheck()
+{
+
+}

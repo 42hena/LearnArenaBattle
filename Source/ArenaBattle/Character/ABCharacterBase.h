@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+#include "Interface/ABAnimationAttackInterface.h"
+
 #include "ABCharacterBase.generated.h"
 
 UENUM()
@@ -14,7 +17,8 @@ enum class ECharacterControlType : uint8
 };
 
 UCLASS()
-class ARENABATTLE_API AABCharacterBase : public ACharacter
+class ARENABATTLE_API AABCharacterBase : public ACharacter,
+	public IABAnimationAttackInterface
 {
 	GENERATED_BODY()
 
@@ -39,6 +43,10 @@ protected:
 	void ComboCheck();
 #pragma endregion
 
+#pragma region AttackHitSection함수
+	virtual void AttackHitCheck() override;
+#pragma endregion
+
 	UPROPERTY(EditAnywhere, Category = CharacterControl, Meta = (AllowPrivateAccess = "true"))
 	TMap<ECharacterControlType, class UABCharacterControlData *> CharacterControlManager;
 	//TMap<ECharacterControlType, TObjectPtr<class UABCharacterControlData>> CharacterControlManager;
@@ -55,4 +63,6 @@ protected:
 	FTimerHandle ComboTimerHandle;
 	bool HasNextComboCommand = false;
 #pragma endregion
+
+
 };
