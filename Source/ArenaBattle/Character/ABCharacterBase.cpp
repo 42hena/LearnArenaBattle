@@ -9,6 +9,8 @@
 #include "ABCharacterControlData.h"
 #include "ABComboActionData.h"
 
+#include "Physics/ABCollision.h"
+
 #pragma region 특수맴버함수
 
 AABCharacterBase::AABCharacterBase()
@@ -172,5 +174,22 @@ void AABCharacterBase::ComboCheck()
 
 void AABCharacterBase::AttackHitCheck()
 {
+	FHitResult OutHitResult;
 
+	// 콜리전 분석시 태그 정보
+	// 복잡한 형태의 충돌체 감지 정보
+	// 무시할 정보
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(Attack), false, this);
+
+	const float AttackRange = 40.0f;
+	const float AttackRadius = 50.0f;
+	const float AttackDamage = 30.0f;
+	const FVector Start = GetActorLocation() + GetActorForwardVector() * GetCapsuleComponent()->GetScaledCapsuleRadius();
+	const FVector End = Start + GetActorForwardVector() * AttackRange;
+
+	bool HitDetected = GetWorld()->SweepSingleByChannel(OutHitResult, Start, End, FQuat::Identity, CCHANNEL_ABACTION, FCollisionShape::MakeSphere(AttackRadius), Params);
+	if (HitDetected)
+	{
+
+	}
 }
