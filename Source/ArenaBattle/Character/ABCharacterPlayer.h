@@ -35,14 +35,21 @@ protected:
 	void ShoulderMove(const FInputActionValue& Value);
 	void QuarterMove(const FInputActionValue& Value);
 	void ShoulderLook(const FInputActionValue& Value);
+
+	void Attack();
 #pragma endregion
 
 #pragma region DataAsset변경가상함수
 	virtual void SetCharacterControlData(const class UABCharacterControlData* CharacterControlData) override;
 #pragma endregion
+
 #pragma region DataAsset변경함수
 	void ChangeCharacterControl();
 	void SetCharacterControl(ECharacterControlType NewCharacterControlType);
+#pragma endregion
+
+#pragma region ComboAction함수
+	void ProcessComboCommand();
 #pragma endregion
 
 #pragma region Camera변수
@@ -72,6 +79,14 @@ protected:
 	TObjectPtr<class UInputAction> ChangeControlAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UInputAction> AttackAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	ECharacterControlType CurrentCharacterControlType;
+#pragma endregion
+
+#pragma region ComboAction변수
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Animation, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UAnimMontage> ComboActionMontage;
 #pragma endregion
 };

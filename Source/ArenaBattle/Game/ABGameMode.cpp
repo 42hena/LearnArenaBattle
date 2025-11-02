@@ -10,7 +10,7 @@
 AABGameMode::AABGameMode()
 {
 	// DefaultPawnClass 지정
-	static ConstructorHelpers::FClassFinder<APawn> DefaultPawnClassRef(TEXT("/Script/CoreUObject.Class'/Script/ArenaBattle.ABCharacterPlayer'"));
+	static ConstructorHelpers::FClassFinder<APawn> DefaultPawnClassRef(TEXT("/Game/ArenaBattle/Blueprint/BP_ABCharacterPlayer.BP_ABCharacterPlayer_C"));
 	ensureAlways(DefaultPawnClassRef.Class);
 	if (DefaultPawnClassRef.Class)
 	{

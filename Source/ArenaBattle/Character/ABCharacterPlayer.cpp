@@ -12,6 +12,8 @@
 
 #include "ABCharacterControlData.h"
 
+#include "Animation/AnimMontage.h"
+
 #pragma region 특수맴버함수
 
 AABCharacterPlayer::AABCharacterPlayer()
@@ -63,6 +65,13 @@ AABCharacterPlayer::AABCharacterPlayer()
 		ChangeControlAction = ChangeControlActionRef.Object;
 	}
 
+	static ConstructorHelpers::FObjectFinder<UInputAction> AttackActionRef(TEXT("/Script/EnhancedInput.InputAction'/Game/ArenaBattle/Input/Actions/IA_Attack.IA_Attack'"));
+	ensureAlways(AttackActionRef.Object);
+	if (nullptr != AttackActionRef.Object)
+	{
+		AttackAction = AttackActionRef.Object;
+	}
+
 	// 캐릭터의 기본 세팅 값 설정.
 	CurrentCharacterControlType = ECharacterControlType::Quarter;
 #pragma endregion
@@ -91,6 +100,8 @@ void AABCharacterPlayer::SetupPlayerInputComponent(class UInputComponent* Player
 	EnhancedInputComponent->BindAction(ShoulderMoveAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ShoulderMove);
 	EnhancedInputComponent->BindAction(ShoulderLookAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ShoulderLook);
 	EnhancedInputComponent->BindAction(QuarterMoveAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::QuarterMove);
+
+	EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::Attack);
 }
 
 #pragma endregion
@@ -141,6 +152,11 @@ void AABCharacterPlayer::ShoulderLook(const FInputActionValue& Value)
 	AddControllerPitchInput(LookAxisVector.Y);
 }
 
+void AABCharacterPlayer::Attack()
+{
+	ProcessComboCommand();
+}
+
 #pragma endregion
 
 #pragma region 가상함수
@@ -169,7 +185,7 @@ void AABCharacterPlayer::SetCharacterControl(ECharacterControlType NewCharacterC
 
 	SetCharacterControlData(NewCharacterControl);
 
-	APlayerController* PlayerController = CastChecked<APlayerController>(GetController());
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 	{
 		Subsystem->ClearAllMappings();
@@ -194,4 +210,19 @@ void AABCharacterPlayer::ChangeCharacterControl()
 		SetCharacterControl(ECharacterControlType::Quarter);
 	}
 }
+
+#pragma endregion
+
+#pragma region 공개함수
+
+void AABCharacterPlayer::ProcessComboCommand()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	if (AnimInstance != nullptr)
+	{
+		AnimInstance->Montage_Play(ComboActionMontage, 1.0f);
+	}
+}
+
 #pragma endregion
