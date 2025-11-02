@@ -27,10 +27,18 @@ public:
 	AABCharacterBase();
 #pragma endregion
 
+#pragma region 엔진제공함수
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+#pragma endregion
+
 #pragma region 가상함수
 protected:
 	// DataAsset변경가상함수
 	virtual void SetCharacterControlData(const class UABCharacterControlData* CharacterControlData);
+
+	// 죽는 함수
+	virtual void SetDead();
+	void PlayDeadAnimation();
 #pragma endregion
 
 #pragma region ComboAction함수
@@ -64,5 +72,9 @@ protected:
 	bool HasNextComboCommand = false;
 #pragma endregion
 
+#pragma region Dead변수
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Animation, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UAnimMontage> DeadMontage;
+#pragma endregion
 
 };
